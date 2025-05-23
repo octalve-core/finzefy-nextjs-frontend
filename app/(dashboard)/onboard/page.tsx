@@ -13,14 +13,6 @@ const OnBoarding = () => {
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         className="flex justify-center items-center h-screen"
       >
-        {/* <Image
-          src="/full_logo.svg"
-          alt="Logo"
-          width={200}
-          height={100}
-          className=""
-        /> */}
-
         <Image
           src="/onboard.svg"
           alt="Logo"
