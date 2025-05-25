@@ -119,6 +119,14 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .smallScreen {
+    @apply lg:hidden min-h-screen flex flex-col;
+  }
+
+  .largeScreen {
+    @apply hidden lg:flex min-h-screen flex-col;
+  }
 }
 
 body {

@@ -16,7 +16,7 @@ export default function AuthLayout({
   return (
     <main className="auth-container auth-layout bg-white">
       {/* SMALL SCREENS */}
-      <div className="smallScreen lg:hidden min-h-screen flex flex-col">
+      <div className="smallScreen">
         <div className="header p-4 flex justify-between items-center">
           <AuthHeader />
         </div>
@@ -25,7 +25,7 @@ export default function AuthLayout({
       </div>
 
       {/* LARGE SCREENS */}
-      <div className="largeScreen hidden lg:block">{children}</div>
+      <div className="largeScreen">{children}</div>
 
       <Toaster />
     </main>

@@ -13,3 +13,16 @@ export const AuthHeader = () => {
     </button>
   );
 };
+
+export const GoBackText = () => {
+  const router = useRouter();
+
+  return (
+    <button
+      onClick={() => router.back()}
+      className="cursor-pointer text-sm text-gray-500 mb-8 flex items-center"
+    >
+      ← Back
+    </button>
+  );
+};
