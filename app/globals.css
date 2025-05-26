@@ -120,12 +120,16 @@
     @apply bg-background text-foreground;
   }
 
+  .myborder {
+    @apply border-8 border-red-700;
+  }
+
   .smallScreen {
-    @apply lg:hidden min-h-screen flex flex-col;
+    @apply lg:!hidden flex flex-col;
   }
 
   .largeScreen {
-    @apply hidden lg:flex min-h-screen flex-col;
+    @apply max-lg:!hidden flex flex-col;
   }
 }
 

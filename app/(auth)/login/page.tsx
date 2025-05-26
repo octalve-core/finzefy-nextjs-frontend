@@ -1,231 +1,223 @@
-// import React from "react";
-
-// const Loginpage = () => {
-//   return (
-//     <>
-//       <div className="w-[815px] h-[1024px] relative bg-white overflow-hidden">
-//         <div className="w-3 h-[791px] left-[803px] top-0 absolute bg-[#40b53e]" />
-
-//         <div className="w-[555px] left-[113px] top-[257.01px] absolute inline-flex flex-col justify-start items-center gap-8">
-//           <div className="self-stretch flex flex-col justify-start items-center gap-6">
-//             <img
-//               className="w-[147px] h-[52.99px]"
-//               src="https://placehold.co/147x53"
-//               alt="Logo"
-//             />
-//             <div className="self-stretch flex flex-col justify-start items-start gap-3">
-//               <div className="self-stretch text-center justify-start text-[#1d2838] text-2xl font-semibold font-['Montserrat'] leading-[38px]">
-//                 Welcome to Finzefy
-//               </div>
-//             </div>
-//           </div>
-
-//           <div className="self-stretch rounded-xl flex flex-col justify-center items-center gap-6">
-//             <div className="self-stretch flex flex-col justify-start items-start gap-1.5">
-//               <label className="justify-start text-[#344053] text-sm font-medium font-['Montserrat'] leading-tight">
-//                 Email*
-//               </label>
-//               <div className="self-stretch px-3.5 py-2.5 bg-white rounded-lg shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] outline outline-1 outline-offset-[-1px] outline-[#cfd4dc] inline-flex justify-start items-center gap-2 overflow-hidden">
-//                 <input
-//                   type="email"
-//                   placeholder="Enter your email"
-//                   className="flex-1 text-[#667084] text-base font-normal font-['Montserrat'] leading-normal outline-none"
-//                 />
-//               </div>
-//             </div>
-
-//             <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
-//               <div className="self-stretch flex flex-col justify-start items-start gap-1.5">
-//                 <label className="justify-start text-[#344053] text-sm font-medium font-['Montserrat'] leading-tight">
-//                   Password*
-//                 </label>
-//                 <div className="self-stretch px-3.5 py-2.5 bg-white rounded-lg shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] outline outline-1 outline-offset-[-1px] outline-[#cfd4dc] inline-flex justify-start items-center gap-2 overflow-hidden">
-//                   <input
-//                     type="password"
-//                     placeholder="Enter your password"
-//                     className="flex-1 text-[#667084] text-base font-normal font-['Montserrat'] leading-normal outline-none"
-//                   />
-//                 </div>
-//               </div>
-//               <div className="self-stretch text-right text-[#d92c20] text-xs font-medium font-['Montserrat'] leading-[18px]">
-//                 Forgot password?
-//               </div>
-//             </div>
-//           </div>
-
-//           <button className="self-stretch px-[18px] py-2.5 bg-[#40b53e] rounded-lg shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] outline outline-offset-[-1px] outline-[#40b53e] inline-flex justify-center items-center gap-2 overflow-hidden">
-//             <span className="text-white text-base font-semibold font-['Montserrat'] leading-normal">
-//               Log in
-//             </span>
-//           </button>
-
-//           <div className="self-stretch text-center">
-//             <span className="text-[#475466] text-xs font-semibold font-['Montserrat'] leading-[18px]">
-//               Don&apos;t have an account?
-//             </span>
-//             <span className="text-[#40b53e] text-xs font-semibold font-['Montserrat'] leading-[18px]">
-//               {" "}
-//               Sign up
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Loginpage;
 "use client";
 
+import { useState } from "react";
 import { z } from "zod";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { toast } from "sonner";
+import React from "react";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import Dropzone from "react-dropzone";
-import { cn } from "@/lib/utils";
+  CustomFormField,
+  GoogleButton,
+  CustomButton,
+} from "../components/Inputs";
+import { LineThroghText } from "../components/LineThroghText";
+import { BottomText } from "../components/BottomText";
+import { AuthHeaderText } from "../components/AuthHeaderText";
+import Link from "next/link";
+import { GoBackText } from "../components/AuthHeader";
 
 const validationSchema = z.object({
-  name: z.string().min(1, {
-    message: "Name is required",
-  }),
+  firstName: z.string().min(1, { message: "First Name is required" }),
+  lastName: z.string().min(1, { message: "Last Name is required" }),
   email: z.string().min(1, { message: "Email is required" }).email({
     message: "Must be a valid email",
   }),
-  products: z
-    .array(
-      z.object({
-        file: z.any(),
-        name: z.string().min(1, { message: "Product Name is required" }),
-        description: z.string().min(1, {
-          message: "Product Description is required",
-        }),
-        price: z.coerce.number(),
-      })
-    )
-    .nonempty({ message: "Product is required" }),
+  phoneNumber: z
+    .string()
+    .min(10, { message: "Phone Number must be at least 10 digits" })
+    .regex(/^\+?\d+$/, {
+      message: "Phone Number must start with a plus or contain only digits",
+    }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters" }),
 });
 
 type FormValues = z.infer<typeof validationSchema>;
 
-export default function Home() {
+export default function SignUpPage() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
     mode: "onBlur",
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      products: [],
+      phoneNumber: "",
+      password: "",
     },
-  });
-
-  const { fields, append } = useFieldArray({
-    name: "products",
-    control: form.control,
   });
 
   const onSubmit = (values: FormValues) => {
     console.log(values);
+
+    toast(
+      <div>
+        <p className="font-bold">You submitted the following values:</p>
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+        </pre>
+      </div>
+    );
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Form {...form}>
-        <form
-          action=""
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex-1 max-w-md space-y-5"
-        >
-          <div className="relative name">
-            <FormField
-              name="name"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter your name"
-                      type="text"
-                      className="mt-3"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="relative email">
-            <FormField
-              name="email"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Email</FormLabel>
-                  <FormControl>
-                    <Input
+    <>
+      <div className="smallScreen min-h-[calc(100vh-100px)] h-[calc(100%-100px)] justify-center">
+        <div className="min-h-full w-full flex flex-col justify-center self-center">
+          <AuthHeaderText
+            title="Log in"
+            className="mb-5"
+            subText={<>You are welcome back.</>}
+          />
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="max-w-[500px] w-full space-y-5 flex flex-col gap-5 self-center"
+            >
+              <CustomFormField
+                name="email"
+                form={form}
+                label="Email"
+                placeholder="Enter your email"
+                type="email"
+                className="mt-1"
+              />
+
+              <CustomFormField
+                name="password"
+                form={form}
+                label="Password"
+                placeholder="Enter your password"
+                type="password"
+                className="mt-3"
+              />
+
+              <CustomButton label="Log in" />
+            </form>
+          </Form>
+
+          <LineThroghText
+            text="Or"
+            className="mt-5 mb-4 max-w-[500px] self-center"
+          />
+
+          <GoogleButton
+            label="Continue with Google"
+            className="mb-10 max-w-[500px] w-full self-center"
+          />
+
+          <BottomText
+            text={
+              <>
+                Have no account?{" "}
+                <Link href="/signup" className="text-[#41B63E] font-bold">
+                  Sign Up
+                </Link>
+              </>
+            }
+          />
+        </div>
+      </div>
+
+      <div className="largeScreen">
+        <div className="grid grid-cols-[4fr_3fr] h-screen">
+          {/* Left Side */}
+          <div className="border-4 w-full flex flex-col justify-center items-center bg-white px-8 py-16">
+            <div className="w-full max-w-lg">
+              <GoBackText />
+
+              <div className="mb-10">
+                <img src="/logo.svg" alt="Finzefy Logo" className="h-10 mb-2" />
+                <h2 className="text-2xl font-semibold text-gray-700">
+                  Create an account
+                </h2>
+              </div>
+
+              <div className="space-y-6">
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="max-w-[500px] w-full space-y-5 flex flex-col gap-5 self-center"
+                  >
+                    <CustomFormField
+                      name="email"
+                      form={form}
+                      label="Email"
                       placeholder="Enter your email"
                       type="email"
-                      className="mt-3"
-                      {...field}
+                      className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+                    <CustomFormField
+                      name="password"
+                      form={form}
+                      label="Password"
+                      placeholder="Enter your password"
+                      type="password"
+                      className="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    />
+
+                    <CustomButton
+                      label="Log in"
+                      className="w-full hover:bg-green-600 py-2 rounded-md transition"
+                    />
+                  </form>
+                </Form>
+
+                <p className="text-center text-sm text-gray-500">
+                  Already have an account?{" "}
+                  <Link href="#" className="text-green-600 hover:underline">
+                    Log in
+                  </Link>
+                </p>
+
+                <p className="text-xs text-center text-gray-400 mt-4">
+                  By Proceeding, you agree to Sen-orient{" "}
+                  <Link href="#" className="underline">
+                    Terms of services
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="#" className="underline">
+                    policy privacy
+                  </Link>
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="relative products">
-            <FormField
-              control={form.control}
-              name="products"
-              render={() => (
-                <Dropzone
-                  accept={{
-                    "image/*": [".jpg", ".jpeg", ".png"],
-                  }}
-                  multiple={true}
-                  maxSize={5000000}
-                >
-                  {({ getRootProps, getInputProps }) => (
-                    <div
-                      {...getRootProps({
-                        className: cn(
-                          "p-3 mb-4 flex flex-col items-center justify-center w-full rounded-md cursor-pointer border border-[#e2e8f0]"
-                        ),
-                      })}
-                    >
-                      <div className="flex items-center gap-x-3 mt-2 mb-2">
-                        <label
-                          htmlFor="Products"
-                          className={`text-sm text-[7E8DA0] cursor-pointer focus:outline-none focus:underline ${
-                            form.formState.errors.products && "text-red-500"
-                          }`}
-                        >
-                          Add your Product Images
-                          <input {...getInputProps()} />
-                        </label>
-                      </div>
-                    </div>
-                  )}
-                </Dropzone>
-              )}
+
+          {/* Right Side */}
+          <div className="flex w-full bg-gray-50 items-center justify-center relative">
+            <img
+              src="/loginBg.jpg"
+              alt="Sign Up Background"
+              className="object-cover h-full rounded-md"
             />
+
+            <div className="absolute top-[16%] left-[20%] bg-white shadow-lg px-3 py-1 rounded-md text-xs flex flex-col items-center gap-0">
+              Invoice
+            </div>
+            <div className="absolute top-[25%] left-[22%] bg-purple-500 text-white shadow-lg px-3 py-1 rounded-md text-xs">
+              Expenses
+            </div>
+            <div className="absolute top-[35%] right-[10%] bg-green-500 text-white shadow-lg px-3 py-1 rounded-md text-xs">
+              Receipt
+            </div>
+            <div className="absolute bottom-[40%] left-[20%] bg-yellow-400 shadow px-3 py-1 rounded-md text-xs flex flex-col item-center">
+
+              Invoice
+            </div>
+            <div className="absolute bottom-[20%] right-[6%] bg-white text-green-700 shadow px-3 py-1 rounded-md text-xs">
+              Expenses
+            </div>
           </div>
-          <Button type="submit" className="!mt-0 w-full">
-            Add
-          </Button>
-        </form>
-      </Form>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

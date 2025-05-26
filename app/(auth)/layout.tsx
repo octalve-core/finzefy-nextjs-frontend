@@ -1,5 +1,4 @@
 import React from "react";
-import { AuthButton } from "./AuthButton";
 import { AuthHeader } from "./components/AuthHeader";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -16,7 +15,7 @@ export default function AuthLayout({
   return (
     <main className="auth-container auth-layout bg-white">
       {/* SMALL SCREENS */}
-      <div className="smallScreen">
+      <div className="smallScreen min-h-screen">
         <div className="header p-4 flex justify-between items-center">
           <AuthHeader />
         </div>
