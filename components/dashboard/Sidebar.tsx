@@ -47,7 +47,7 @@ const navItems: NavItem[] = [
     href: "/dashboard/payment-received",
     icon: CreditCard,
   },
-  { label: "Credit Note", href: "/dashboard/credit-note", icon: FileMinus },
+  { label: "Credit note", href: "/dashboard/credit-note", icon: FileMinus },
   {
     label: "Other Services",
     href: "/dashboard/other-services",

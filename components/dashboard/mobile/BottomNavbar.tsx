@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Layers, Calendar, User } from "lucide-react";
+import { Home, FileText, Receipt, Users, MoreHorizontal } from "lucide-react";
 
 const navItems = [
-  { label: "Home", href: "/dashboard", icon: Home },
-  { label: "Services", href: "/dashboard/services", icon: Layers },
-  { label: "Subscription", href: "/dashboard/subscription", icon: Calendar },
-  { label: "Account", href: "/dashboard/account", icon: User },
+  { label: "Dashboard", href: "/dashboard", icon: Home },
+  { label: "Invoices", href: "/dashboard/invoice", icon: FileText },
+  { label: "Receipts", href: "/dashboard/receipt", icon: Receipt },
+  { label: "Customers", href: "/dashboard/customer", icon: Users },
+  { label: "More", href: "/dashboard/settings", icon: MoreHorizontal },
 ];
 
 export default function BottomNavbar() {

@@ -7,6 +7,9 @@ interface StatusBadgeProps {
     | "overdue"
     | "sent"
     | "declined"
+    | "active"
+    | "inactive"
+    | "paused"
     | string;
 }
 
@@ -49,6 +52,21 @@ const statusStyles: Record<
     text: "text-red-700",
     label: "Declined",
   },
+  active: {
+    bg: "bg-green-100",
+    text: "text-green-700",
+    label: "Active",
+  },
+  inactive: {
+    bg: "bg-gray-100",
+    text: "text-gray-700",
+    label: "Inactive",
+  },
+  paused: {
+    bg: "bg-yellow-100",
+    text: "text-yellow-700",
+    label: "Paused",
+  }
 };
 
 const defaultStyle = {
