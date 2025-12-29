@@ -1,9 +1,14 @@
 import { FileText, Users, Wallet, FileSpreadsheet } from "lucide-react";
+import { useState } from "react";
 import Tabs from "@/components/dashboard/ui/Tabs";
 import StatCard from "@/components/dashboard/cards/StatCard";
 import QuickAction from "@/components/dashboard/cards/QuickAction";
 import ReceivableChart from "@/components/dashboard/charts/ReceivableChart";
 import TransactionTable from "@/components/dashboard/tables/TransactionTable";
+import CreateInvoiceModal from "@/components/dashboard/modals/CreateInvoiceModal";
+import AddCustomerModal from "@/components/dashboard/modals/AddCustomerModal";
+import CreateExpenseModal from "@/components/dashboard/modals/CreateExpenseModal";
+import CreateQuotationModal from "@/components/dashboard/modals/CreateQuotationModal";
 
 const tabs = [
   { label: "Dashboard", href: "/dashboard" },
@@ -12,10 +17,10 @@ const tabs = [
 ];
 
 const quickActions = [
-  { icon: FileText, label: "New Invoice" },
-  { icon: Users, label: "New Customer" },
-  { icon: Wallet, label: "New Expenses" },
-  { icon: FileSpreadsheet, label: "New Quotation" },
+  { icon: FileText, label: "New Invoice", action: "invoice" },
+  { icon: Users, label: "New Customer", action: "customer" },
+  { icon: Wallet, label: "New Expenses", action: "expense" },
+  { icon: FileSpreadsheet, label: "New Quotation", action: "quotation" },
 ];
 
 const statsData = [
@@ -43,6 +48,15 @@ const statsData = [
 ];
 
 export default function DashboardPage() {
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+
+  const closeModals = () => setActiveModal(null);
+
+  const handleCreate = (type: string, data: any) => {
+    console.log(`Creating ${type}:`, data);
+    closeModals();
+  };
+
   return (
     <div className="space-y-6">
       {/* Tabs */}
@@ -69,6 +83,7 @@ export default function DashboardPage() {
               key={action.label}
               icon={action.icon}
               label={action.label}
+              onClick={() => setActiveModal(action.action)}
             />
           ))}
         </div>
@@ -117,6 +132,28 @@ export default function DashboardPage() {
 
       {/* Recent Transactions */}
       <TransactionTable />
+
+      {/* Quick Action Modals */}
+      <CreateInvoiceModal
+        isOpen={activeModal === "invoice"}
+        onClose={closeModals}
+        onSubmit={(data) => handleCreate("invoice", data)}
+      />
+      <AddCustomerModal
+        isOpen={activeModal === "customer"}
+        onClose={closeModals}
+        onSubmit={(data) => handleCreate("customer", data)}
+      />
+      <CreateExpenseModal
+        isOpen={activeModal === "expense"}
+        onClose={closeModals}
+        onSubmit={(data) => handleCreate("expense", data)}
+      />
+      <CreateQuotationModal
+        isOpen={activeModal === "quotation"}
+        onClose={closeModals}
+        onSubmit={(data) => handleCreate("quotation", data)}
+      />
     </div>
   );
 }
