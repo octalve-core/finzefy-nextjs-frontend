@@ -1,3 +1,5 @@
+"use client";
+
 import { FileText, Users, Wallet, FileSpreadsheet } from "lucide-react";
 import { useState } from "react";
 import Tabs from "@/components/dashboard/ui/Tabs";
