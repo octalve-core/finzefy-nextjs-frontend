@@ -16,7 +16,7 @@ export default function Tabs({ tabs }: TabsProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-6 border-b border-gray-200">
+    <div className="flex items-center gap-6 border-b border-gray-200 overflow-x-auto whitespace-nowrap scrollbar-hide">
       {tabs.map((tab) => {
         const isActive = pathname === tab.href;
 

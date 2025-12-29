@@ -26,7 +26,7 @@ export default function StatCard({
   return (
     <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
       <div className="flex items-start justify-between">
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           <p className="text-sm text-gray-500 font-medium">{title}</p>
           <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
           <div className="flex items-center gap-1 mt-2">

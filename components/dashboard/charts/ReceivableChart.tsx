@@ -47,7 +47,7 @@ export default function ReceivableChart({
               AMOUNT RECEIVABLE: MONTHLY
             </span>
           </div>
-          <div className="flex items-baseline gap-3">
+          <div className="flex flex-wrap items-baseline gap-2 sm:gap-3">
             <span className="text-3xl font-bold text-gray-900">
               {totalAmount}
             </span>
@@ -86,7 +86,10 @@ export default function ReceivableChart({
               tickFormatter={(value) => `${value / 1000}K`}
             />
             <Tooltip
-              formatter={(value?: number) => [`₦${(value ?? 0).toLocaleString()}`, ""]}
+              formatter={(value?: number) => [
+                `₦${(value ?? 0).toLocaleString()}`,
+                "",
+              ]}
               contentStyle={{
                 backgroundColor: "white",
                 border: "1px solid #E5E7EB",

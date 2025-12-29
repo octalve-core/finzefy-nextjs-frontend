@@ -9,15 +9,7 @@ interface TopNavbarProps {
 
 export default function TopNavbar({ onMenuClick }: TopNavbarProps) {
   return (
-    <header className="sticky top-0 z-40 flex items-center justify-between h-16 px-4 lg:px-6 bg-white border-b border-gray-200">
-      {/* Mobile menu button */}
-      <button
-        onClick={onMenuClick}
-        className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-      >
-        <Menu className="w-6 h-6 text-gray-600" />
-      </button>
-
+    <header className="hidden lg:flex sticky top-0 z-40 items-center justify-between h-16 px-4 lg:px-6 bg-white border-b border-gray-200">
       {/* Search */}
       <div className="hidden lg:flex items-center flex-1 max-w-md">
         <div className="relative w-full">
